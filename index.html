@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Fundos em Outras Instituições · Hub Financeiro</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Atkinson+Hyperlegible:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #07080B;
+      --bg2: #0D0F14;
+      --bg3: #12151C;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --gold: #f0bc3d;
+      --gold2: #c99421;
+      --text: #F5F6F8;
+      --text2: #9CA1AC;
+      --text3: #767C8A;
+      --card-bg: #0D0F14;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 7px;
+      --success: #3ec97a;
+      --danger: #ef5b50;
+      --font-data: 'IBM Plex Mono', ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', 'Atkinson Hyperlegible', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.light {
+      --bg: #f3f5f8; --bg2: #ffffff; --bg3: #eef1f6;
+      --border: rgba(15,23,42,0.09); --border2: rgba(15,23,42,0.15);
+      --gold: #92660a; --gold2: #76520a;
+      --text: #14182a; --text2: #4b5268; --text3: #5c637d;
+      --card-bg: #ffffff;
+    }
+
+
+    /* ========== HUB TOPBAR (mesmo padrão das outras ferramentas) ========== */
+    .hub-topbar {
+      --bg-topbar: #141720; --border-topbar: #2a2e3f; --text-topbar: #e1e3ef;
+      --text2-topbar: #9a9eb8; --text3-topbar: #5c6080; --gold-topbar: #f5c842; --amber-topbar: #e0ac2c;
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: rgba(20,23,32,.3); backdrop-filter: blur(8px) saturate(200%); -webkit-backdrop-filter: blur(8px) saturate(200%);
+      border-bottom: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 4px 16px -8px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(255,255,255,.05);
+      height: 52px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1rem; gap: 12px; position: sticky; top: 0; z-index: 200;
+    }
+    body.light .hub-topbar {
+      --bg-topbar: #ffffff; --border-topbar: #d4d8e2; --text-topbar: #1a1d2e;
+      --text2-topbar: #4a4f6a; --text3-topbar: #8a90a8; --gold-topbar: #b8860b; --amber-topbar: #c47d00;
+      background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none;
+      border-bottom: 1px solid var(--border-topbar); box-shadow: 0 4px 16px -8px rgba(0,0,0,0.1);
+    }
+    .hub-topbar-left, .hub-topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .hub-topbar-center { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none; }
+    .hub-pbf-badge {
+      background: var(--gold-topbar); padding: 0 12px; height: 30px; border-radius: 40px;
+      display: flex; align-items: center; font-size: 12px; font-weight: 800; color: #000; letter-spacing: 0.5px;
+    }
+    .hub-topbar-title { font-size: 14px; font-weight: 600; color: var(--text-topbar); white-space: nowrap; }
+    .hub-back-btn, .hub-newtab-btn {
+      display: inline-flex; align-items: center; gap: 5px; background: transparent;
+      border: 1px solid var(--border-topbar); border-radius: 8px; color: var(--text2-topbar);
+      font-family: inherit; font-size: 12px; font-weight: 500; padding: 5px 10px; cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s; white-space: nowrap;
+    }
+    .hub-back-btn:hover, .hub-newtab-btn:hover { border-color: var(--amber-topbar); color: var(--gold-topbar); background: var(--bg-topbar); }
+    .hub-active-tool { font-size: 15px; font-weight: 700; color: var(--gold-topbar); white-space: nowrap; }
+    .hub-clock {
+      font-size: 11px; color: var(--text3-topbar); font-variant-numeric: tabular-nums;
+      background: var(--bg-topbar); padding: 4px 10px; border-radius: 30px; border: 1px solid var(--border-topbar);
+    }
+    .hub-theme-btn {
+      background: var(--border-topbar); border: 1px solid var(--border-topbar); border-radius: 11px;
+      width: 46px; height: 22px; position: relative; cursor: pointer; transition: background 0.25s, border-color 0.2s;
+      flex-shrink: 0; padding: 0;
+    }
+    .hub-theme-btn:hover { border-color: var(--gold-topbar); }
+    .hub-theme-btn .hub-theme-knob {
+      position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--text2-topbar); transition: left 0.25s, background 0.25s;
+    }
+    body.light .hub-theme-btn { background: rgba(184, 134, 11, 0.3); }
+    body.light .hub-theme-btn .hub-theme-knob { left: 26px; background: var(--gold-topbar); }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal;
+      font-size: 20px; line-height: 1; display: inline-block;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    @media (max-width: 600px) {
+      .hub-back-btn, .hub-newtab-btn { padding: 5px 8px; font-size: 11px; }
+      .hub-active-tool { font-size: 13px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+      .hub-clock { font-size: 10px; padding: 4px 6px; }
+      .hub-theme-btn { width: 40px; height: 20px; }
+      .hub-theme-btn .hub-theme-knob { width: 16px; height: 16px; }
+      body.light .hub-theme-btn .hub-theme-knob { left: 22px; }
+    }
+    @media (max-width: 480px) {
+      .hub-topbar-title { display: none; }
+      .hub-topbar-center { position: static; transform: none; margin: 0 auto; }
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      font-size: 13.5px;
+      color: var(--text2);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold);
+      color: #1a1300;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold2); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-ghost:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* INPUT CARD */
+    .input-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      margin-bottom: 24px;
+    }
+
+    .input-card h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .texto-area {
+      width: 100%;
+      min-height: 200px;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-md);
+      color: var(--text);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    .texto-area:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(240,188,61,0.14);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .status-line {
+      font-size: 12.5px;
+      color: var(--text3);
+      margin-top: 10px;
+    }
+    .status-line.ok { color: var(--success); }
+    .status-line.err { color: var(--danger); }
+
+    /* SEARCH + FILTERS */
+    .search-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-input-wrap .material-symbols-outlined {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: var(--text3);
+      pointer-events: none;
+    }
+
+    .search-input-wrap input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px 10px 40px;
+      font-size: 13.5px;
+      font-family: inherit;
+    }
+    .search-input-wrap input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(240,188,61,0.16);
+    }
+
+    /* PILL BUTTONS */
+    .stats {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      color: var(--text2);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .pill:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+    .pill.active {
+      background: rgba(240, 188, 61, 0.12);
+      border-color: rgba(240, 188, 61, 0.45);
+      color: var(--gold);
+    }
+    .pill strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .pill.active strong {
+      color: var(--gold);
+    }
+
+    /* FUND LIST */
+    .inst-section {
+      margin-bottom: 28px;
+    }
+
+    .inst-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inst-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inst-count {
+      font-size: 12px;
+      color: var(--text3);
+      background: var(--bg3);
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .fund-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fund-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      transition: border-color 0.15s;
+    }
+    .fund-card:hover {
+      border-color: var(--border2);
+    }
+
+    .fund-info { flex: 1; min-width: 0; }
+
+    .fund-name {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+
+    .fund-meta {
+      font-size: 12px;
+      color: var(--text3);
+      font-family: var(--font-data);
+    }
+
+    .fund-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      border-radius: var(--radius-sm);
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .btn-link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text3);
+      font-size: 14px;
+    }
+
+    .empty-state .material-symbols-outlined {
+      font-size: 36px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+      display: block;
+    }
+
+    .app-footer {
+      text-align: center;
+      padding: 28px 16px 20px;
+      font-size: 11.5px;
+      color: var(--text3);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="hub-topbar">
+    <div class="hub-topbar-left">
+      <div class="hub-pbf-badge">PBF</div>
+      <span class="hub-topbar-title">Hub Financeiro</span>
+      <button type="button" class="hub-back-btn" id="hubBackBtn">
+        <span class="material-symbols-outlined" style="font-size:15px;">arrow_back</span>
+        Voltar ao início
+      </button>
+    </div>
+    <div class="hub-topbar-center">
+      <span class="hub-active-tool">Fundos em Outras Instituições</span>
+    </div>
+    <div class="hub-topbar-right">
+      <button type="button" class="hub-newtab-btn" id="hubNewTabBtn">Nova aba</button>
+      <span class="hub-clock" id="hubClock"></span>
+      <button type="button" class="hub-theme-btn" id="hubThemeBtn" title="Alternar tema" aria-label="Alternar tema">
+        <span class="hub-theme-knob"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <div class="page-header">
+      <div>
+        <h1>Fundos em Outras Instituições</h1>
+        <p id="pageSubtitle">Base de fundos para indicação · Publicada no HTML (GitHub)</p>
+      </div>
+      <div id="headerActions" class="hidden" style="gap:8px;flex-wrap:wrap;">
+        <button class="btn-ghost" id="btnBaixarHtmlTop">
+          <span class="material-symbols-outlined" style="font-size:16px;">download</span>
+          Baixar HTML
+        </button>
+        <button class="btn-ghost" id="btnAtualizar">
+          <span class="material-symbols-outlined" style="font-size:16px;">edit</span>
+          Atualizar base
+        </button>
+      </div>
+    </div>
+
+    <!-- INPUT (só aparece se não tem dados ou usuário clicou em Atualizar) -->
+    <div class="input-card" id="inputCard">
+      <h2>
+        <span class="material-symbols-outlined" style="font-size:18px;">upload_file</span>
+        Carregar / Atualizar base de fundos
+      </h2>
+      <textarea class="texto-area" id="textoLivre" placeholder="Cole aqui a lista no formato:
+
+BRADESCO:
+Bradesco FIF CIC RF Referenciada DI MAX RL
+CNPJ: 32.312.124/0001-07
+https://maisretorno.com/fundo/...
+
+BANCO DO BRASIL:
+BB Espelho Sulamérica Crédito ASG
+CNPJ: 51.681.664/0001-02
+https://maisretorno.com/fundo/...
+
+..."></textarea>
+      <div class="input-actions">
+        <button class="btn-primary" id="btnSalvar">
+          <span class="material-symbols-outlined" style="font-size:16px;">save</span>
+          Aplicar lista
+        </button>
+        <button class="btn-primary" id="btnBaixarHtml" style="background:var(--bg3);color:var(--gold);border:1px solid rgba(240,188,61,0.35);">
+          <span class="material-symbols-outlined" style="font-size:16px;">download</span>
+          Baixar HTML atualizado
+        </button>
+        <button class="btn-ghost" id="btnLimparBase">
+          <span class="material-symbols-outlined" style="font-size:16px;">delete</span>
+          Limpar
+        </button>
+        <button class="btn-ghost" id="btnExemplo">Carregar exemplo</button>
+        <button class="btn-ghost hidden" id="btnCancelarEdicao">Cancelar</button>
+      </div>
+      <div class="status-line" id="statusLine"></div>
+    </div>
+
+    <!-- SEARCH + LIST -->
+    <div id="searchSection" class="hidden">
+      <div class="search-bar">
+        <div class="search-input-wrap">
+          <span class="material-symbols-outlined">search</span>
+          <input type="text" id="buscaTexto" placeholder="Buscar por nome do fundo ou CNPJ..." />
+        </div>
+      </div>
+
+      <!-- Pills de filtro por instituição -->
+      <div class="stats" id="pillsBar"></div>
+
+      <div id="listaFundos"></div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <span class="material-symbols-outlined">folder_open</span>
+      Nenhuma base carregada ainda.<br>
+      Cole a lista de fundos acima e clique em <strong>Salvar base</strong>.
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    Hub Financeiro · Fundos em Outras Instituições · Base embutida no HTML · compartilhada via GitHub Pages
+  </footer>
+
+  <script>
+    /* =========================================================
+       BASE EMBUTIDA NO HTML
+       - Esta é a fonte oficial compartilhada (GitHub Pages).
+       - Ao atualizar a lista, use "Salvar e baixar HTML" e
+         substitua o arquivo no repositório.
+       ========================================================= */
+    const FUNDOS_EMBEDDED = [
+  {
+    "instituicao": "BRADESCO",
+    "nome": "Bradesco FIF CIC RF Referenciada DI MAX RL",
+    "cnpj": "32.312.124/0001-07",
+    "link": "https://maisretorno.com/fundo/bradesco-fif-cic-rf-referenciada-di-max-rl"
+  },
+  {
+    "instituicao": "BANCO DO BRASIL",
+    "nome": "BB Espelho Sulamérica Crédito ASG",
+    "cnpj": "51.681.664/0001-02",
+    "link": "https://maisretorno.com/fundo/bb-espelho-sulamerica-credito-asg-fic-fif-rf-cp-is-rl-1"
+  },
+  {
+    "instituicao": "BANCO DO BRASIL",
+    "nome": "BB RF LP HIGH",
+    "cnpj": "29.224.634/0001-00",
+    "link": "https://maisretorno.com/fundo/bb-rf-lp-high-fic-fif-rl"
+  },
+  {
+    "instituicao": "CAIXA ECONOMICA",
+    "nome": "CAIXA MEGA FI FINANCEIRO RF REFERENCIADO DI LP RL",
+    "cnpj": "10.322.633/0001-70",
+    "link": "https://maisretorno.com/fundo/caixa-mega-fic-classe-fif-rf-referenciado-di-lp-rl"
+  },
+  {
+    "instituicao": "CAIXA ECONOMICA",
+    "nome": "CAIXA MAXI RESP LIMITADA FIF CIC RENDA FIXA CRÉDITO PRIVADO LP",
+    "cnpj": "17.322.725/0001-07",
+    "link": "https://maisretorno.com/fundo/caixa-maxi-fic-classe-fif-rf-cp-lp-rl"
+  },
+  {
+    "instituicao": "SANTANDER",
+    "nome": "Santander Advanced RF Referenciado DI CIC FIF RL (mesmo fundo master)",
+    "cnpj": "26.507.128/0001-30",
+    "link": "https://maisretorno.com/fundo/santander-advanced-rf-referenciado-di-cic-fif-rl"
+  },
+  {
+    "instituicao": "SANTANDER",
+    "nome": "Santander VIP RF Referenciado DI CIC FIF RL (mesmo fundo master)",
+    "cnpj": "02.910.278/0001-21",
+    "link": "https://maisretorno.com/fundo/santander-vip-rf-referenciado-di-cic-fif-rl"
+  },
+  {
+    "instituicao": "SANTANDER",
+    "nome": "Santander Premium RF Referenciado DI CIC FIF RL (mesmo fundo master)",
+    "cnpj": "03.069.104/0001-40",
+    "link": "https://maisretorno.com/fundo/santander-premium-rf-referenciado-di-cic-fif-rl"
+  },
+  {
+    "instituicao": "SANTANDER",
+    "nome": "Santander Equilibrio Advanced RF Referenciado DI CP CIC FIF RL",
+    "cnpj": "01.615.744/0001-83",
+    "link": "https://maisretorno.com/fundo/santander-equilibrio-advanced-rf-referenciado-di-cp-cic-fif-rl"
+  }
+];
+
+    let fundos = Array.isArray(FUNDOS_EMBEDDED) ? FUNDOS_EMBEDDED.slice() : [];
+    const STORAGE_DRAFT = 'hub_fundos_draft_v1'; // rascunho local opcional enquanto edita
+    let instituicaoAtiva = ''; // '' = todas
+
+    function updateClock() {
+      const el = document.getElementById('hubClock');
+      if (!el) return;
+      const now = new Date();
+      el.textContent = now.toLocaleDateString('pt-BR', {
+        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric'
+      }) + ' · ' + now.toLocaleTimeString('pt-BR', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    document.getElementById('hubNewTabBtn').addEventListener('click', () => {
+      window.open(window.location.href, '_blank');
+    });
+
+    document.getElementById('hubBackBtn').addEventListener('click', () => {
+      if (window.self !== window.top) window.parent.postMessage({ action: 'hubNavigate', target: 'home' }, '*');
+      else window.location.href = 'https://pabloads2020-lang.github.io/Dashboard-Ferramentas-Integradas/dashboard.html';
+    });
+
+    (function initTheme() {
+      if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+      document.getElementById('hubThemeBtn').addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    })();
+
+    carregarBase();
+
+    // ========== PARSE ==========
+    function parseTexto(texto) {
+      const linhas = texto.trim().split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const resultado = [];
+      let instituicaoAtual = null;
+      let nomeAtual = null;
+      let cnpjAtual = null;
+
+      for (let i = 0; i < linhas.length; i++) {
+        const linha = linhas[i];
+
+        if (linha.endsWith(':') && !linha.toLowerCase().startsWith('cnpj')) {
+          instituicaoAtual = linha.slice(0, -1).trim();
+          continue;
+        }
+
+        if (linha.toLowerCase().startsWith('cnpj:')) {
+          cnpjAtual = linha.replace(/cnpj:/i, '').trim();
+          continue;
+        }
+
+        if (linha.startsWith('http')) {
+          if (instituicaoAtual && nomeAtual) {
+            resultado.push({
+              instituicao: instituicaoAtual,
+              nome: nomeAtual,
+              cnpj: cnpjAtual || '',
+              link: linha
+            });
+          }
+          nomeAtual = null;
+          cnpjAtual = null;
+          continue;
+        }
+
+        if (instituicaoAtual && !linha.toLowerCase().startsWith('cnpj') && !linha.startsWith('http')) {
+          if (nomeAtual) {
+            resultado.push({
+              instituicao: instituicaoAtual,
+              nome: nomeAtual,
+              cnpj: cnpjAtual || '',
+              link: ''
+            });
+          }
+          nomeAtual = linha;
+          cnpjAtual = null;
+        }
+      }
+
+      if (instituicaoAtual && nomeAtual) {
+        resultado.push({
+          instituicao: instituicaoAtual,
+          nome: nomeAtual,
+          cnpj: cnpjAtual || '',
+          link: ''
+        });
+      }
+
+      return resultado;
+    }
+
+    // ========== SAVE / LOAD ==========
+    function salvarBase() {
+      const texto = document.getElementById('textoLivre').value.trim();
+      const status = document.getElementById('statusLine');
+
+      if (!texto) {
+        status.textContent = 'Cole a lista de fundos primeiro';
+        status.className = 'status-line err';
+        return;
+      }
+
+      try {
+        const parsed = parseTexto(texto);
+        if (!parsed.length) {
+          status.textContent = 'Não consegui interpretar nenhum fundo. Verifique o formato.';
+          status.className = 'status-line err';
+          return;
+        }
+
+        fundos = parsed;
+        // rascunho local só para não perder enquanto edita nesta máquina
+        try { localStorage.setItem(STORAGE_DRAFT, JSON.stringify(fundos)); } catch (e) {}
+        status.textContent = fundos.length + ' fundos carregados nesta sessão. Use "Baixar HTML" para publicar no GitHub.';
+        status.className = 'status-line ok';
+        instituicaoAtiva = '';
+        render(true);
+      } catch (e) {
+        status.textContent = 'Erro ao processar: ' + e.message;
+        status.className = 'status-line err';
+      }
+    }
+
+    function carregarBase() {
+      // 1) prioridade: base embutida no HTML (compartilhada via GitHub)
+      if (Array.isArray(FUNDOS_EMBEDDED) && FUNDOS_EMBEDDED.length) {
+        fundos = FUNDOS_EMBEDDED.slice();
+        render(true);
+        return;
+      }
+      // 2) fallback: rascunho local desta máquina
+      try {
+        const raw = localStorage.getItem(STORAGE_DRAFT);
+        if (raw) {
+          fundos = JSON.parse(raw);
+          render(true);
+          return;
+        }
+      } catch (e) {}
+      render(false);
+    }
+
+    function limparBase() {
+      if (!confirm('Limpar a base desta sessão? (O HTML embutido no arquivo não muda até você baixar um novo)')) return;
+      fundos = [];
+      try { localStorage.removeItem(STORAGE_DRAFT); } catch (e) {}
+      document.getElementById('textoLivre').value = '';
+      document.getElementById('statusLine').textContent = 'Base da sessão limpa';
+      document.getElementById('statusLine').className = 'status-line';
+      instituicaoAtiva = '';
+      render(false);
+    }
+
+    function baixarHtmlAtualizado() {
+      if (!fundos.length) {
+        alert('Não há fundos para embutir. Carregue/salve a lista antes.');
+        return;
+      }
+
+      const json = JSON.stringify(fundos, null, 2);
+      const re = /const\s+FUNDOS_EMBEDDED\s*=\s*\[[\s\S]*?\];/;
+
+      function finalizar(src) {
+        if (!re.test(src)) {
+          alert('Não encontrei o bloco FUNDOS_EMBEDDED no HTML base.');
+          return;
+        }
+        const novo = src.replace(re, 'const FUNDOS_EMBEDDED = ' + json + ';');
+        const blob = new Blob([novo], { type: 'text/html;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'fundos-outras-instituicoes.html';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(a.href);
+
+        const status = document.getElementById('statusLine');
+        if (status) {
+          status.textContent = 'HTML baixado com ' + fundos.length + ' fundos embutidos. Suba este arquivo no GitHub.';
+          status.className = 'status-line ok';
+        } else {
+          alert('HTML baixado com ' + fundos.length + ' fundos. Suba o arquivo no GitHub Pages.');
+        }
+      }
+
+      fetch(window.location.href)
+        .then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
+        .then(finalizar)
+        .catch(() => {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.html,text/html';
+          input.onchange = () => {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => finalizar(String(reader.result || ''));
+            reader.readAsText(file);
+          };
+          alert('Não consegui ler o HTML automaticamente (comum em file://).\n\nSelecione o arquivo fundos-outras-instituicoes.html atual para gerar a versão atualizada.');
+          input.click();
+        });
+    }
+
+
+    function render(esconderInput) {
+      const temDados = fundos.length > 0;
+
+      if (esconderInput && temDados) {
+        document.getElementById('inputCard').classList.add('hidden');
+        document.getElementById('headerActions').classList.remove('hidden');
+        document.getElementById('headerActions').style.display = 'flex';
+      } else {
+        document.getElementById('inputCard').classList.remove('hidden');
+        document.getElementById('headerActions').classList.add('hidden');
+        document.getElementById('headerActions').style.display = 'none';
+        if (temDados) {
+          document.getElementById('btnCancelarEdicao').classList.remove('hidden');
+        } else {
+          document.getElementById('btnCancelarEdicao').classList.add('hidden');
+        }
+      }
+
+      document.getElementById('searchSection').classList.toggle('hidden', !temDados);
+      document.getElementById('emptyState').classList.toggle('hidden', temDados);
+
+      if (!temDados) {
+        document.getElementById('pageSubtitle').textContent = 'Base de fundos para indicação · Nenhuma base embutida';
+        return;
+      }
+
+      document.getElementById('pageSubtitle').textContent =
+        'Base de fundos para indicação · ' + fundos.length + ' fundos';
+
+      if (!esconderInput) {
+        document.getElementById('textoLivre').value = reconstruirTexto(fundos);
+      }
+
+      aplicarFiltros();
+    }
+
+    function reconstruirTexto(lista) {
+      const grupos = {};
+      lista.forEach(f => {
+        if (!grupos[f.instituicao]) grupos[f.instituicao] = [];
+        grupos[f.instituicao].push(f);
+      });
+
+      let txt = '';
+      Object.keys(grupos).sort().forEach(inst => {
+        txt += inst + ':\n';
+        grupos[inst].forEach(f => {
+          txt += f.nome + '\n';
+          if (f.cnpj) txt += 'CNPJ: ' + f.cnpj + '\n';
+          if (f.link) txt += f.link + '\n';
+          txt += '\n';
+        });
+      });
+      return txt.trim();
+    }
+
+    function aplicarFiltros() {
+      const q = document.getElementById('buscaTexto').value.toLowerCase().trim();
+
+      let filtrados = fundos.filter(f => {
+        if (instituicaoAtiva && f.instituicao !== instituicaoAtiva) return false;
+        if (q) {
+          const alvo = (f.nome + ' ' + f.cnpj + ' ' + f.instituicao).toLowerCase();
+          if (!alvo.includes(q)) return false;
+        }
+        return true;
+      });
+
+      // Pills
+      const contagem = {};
+      fundos.forEach(f => {
+        contagem[f.instituicao] = (contagem[f.instituicao] || 0) + 1;
+      });
+
+      const instituicoes = Object.keys(contagem).sort();
+      let pillsHtml = '';
+
+      // Pill "Todas"
+      const total = fundos.length;
+      const nInst = instituicoes.length;
+      pillsHtml += '<button class="pill' + (instituicaoAtiva === '' ? ' active' : '') + '" data-inst="">' +
+        '<strong>' + total + '</strong> fundos · <strong>' + nInst + '</strong> instituições</button>';
+
+      instituicoes.forEach(inst => {
+        const count = contagem[inst];
+        const active = instituicaoAtiva === inst ? ' active' : '';
+        pillsHtml += '<button class="pill' + active + '" data-inst="' + escapeAttr(inst) + '">' +
+          escapeHtml(inst) + ' <strong>' + count + '</strong></button>';
+      });
+
+      document.getElementById('pillsBar').innerHTML = pillsHtml;
+
+      // Bind click nas pills
+      document.querySelectorAll('#pillsBar .pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          instituicaoAtiva = btn.dataset.inst;
+          aplicarFiltros();
+        });
+      });
+
+      // Lista
+      const container = document.getElementById('listaFundos');
+
+      if (!filtrados.length) {
+        container.innerHTML = '<div class="empty-state" style="padding:32px 20px;"><span class="material-symbols-outlined">search_off</span>Nenhum fundo encontrado.</div>';
+        return;
+      }
+
+      // Agrupa
+      const grupos = {};
+      filtrados.forEach(f => {
+        if (!grupos[f.instituicao]) grupos[f.instituicao] = [];
+        grupos[f.instituicao].push(f);
+      });
+
+      let html = '';
+      Object.keys(grupos).sort().forEach(inst => {
+        const lista = grupos[inst];
+        html += '<div class="inst-section">';
+        html += '<div class="inst-header">';
+        html += '<div class="inst-name">' + escapeHtml(inst) + '</div>';
+        html += '<div class="inst-count">' + lista.length + ' fundo' + (lista.length > 1 ? 's' : '') + '</div>';
+        html += '</div><div class="fund-list">';
+
+        lista.forEach(f => {
+          html += '<div class="fund-card">';
+          html += '<div class="fund-info">';
+          html += '<div class="fund-name">' + escapeHtml(f.nome) + '</div>';
+          html += '<div class="fund-meta">' + (f.cnpj ? 'CNPJ: ' + escapeHtml(f.cnpj) : 'CNPJ não informado') + '</div>';
+          html += '</div><div class="fund-actions">';
+          if (f.link) {
+            html += '<a class="btn-link" href="' + escapeAttr(f.link) + '" target="_blank" rel="noopener">';
+            html += '<span class="material-symbols-outlined" style="font-size:15px;">open_in_new</span>Mais Retorno</a>';
+          }
+          html += '</div></div>';
+        });
+
+        html += '</div></div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ========== EVENTS ==========
+    document.getElementById('btnSalvar').addEventListener('click', salvarBase);
+    document.getElementById('btnLimparBase').addEventListener('click', limparBase);
+    document.getElementById('btnBaixarHtml').addEventListener('click', baixarHtmlAtualizado);
+    document.getElementById('btnBaixarHtmlTop').addEventListener('click', baixarHtmlAtualizado);
+    document.getElementById('buscaTexto').addEventListener('input', aplicarFiltros);
+
+    document.getElementById('btnAtualizar').addEventListener('click', () => {
+      render(false); // mostra input para editar
+    });
+
+    document.getElementById('btnCancelarEdicao').addEventListener('click', () => {
+      render(true); // volta a esconder
+    });
+
+    document.getElementById('btnExemplo').addEventListener('click', () => {
+      document.getElementById('textoLivre').value = `BRADESCO:
+Bradesco FIF CIC RF Referenciada DI MAX RL
+CNPJ: 32.312.124/0001-07
+https://maisretorno.com/fundo/bradesco-fif-cic-rf-referenciada-di-max-rl
+
+BANCO DO BRASIL:
+BB Espelho Sulamérica Crédito ASG
+CNPJ: 51.681.664/0001-02
+https://maisretorno.com/fundo/bb-espelho-sulamerica-credito-asg-fic-fif-rf-cp-is-rl-1
+
+BB RF LP HIGH
+CNPJ: 29.224.634/0001-00
+https://maisretorno.com/fundo/bb-rf-lp-high-fic-fif-rl
+
+CAIXA ECONOMICA:
+CAIXA MEGA FI FINANCEIRO RF REFERENCIADO DI LP RL
+CNPJ: 10.322.633/0001-70
+https://maisretorno.com/fundo/caixa-mega-fic-classe-fif-rf-referenciado-di-lp-rl
+
+CAIXA MAXI RESP LIMITADA FIF CIC RENDA FIXA CRÉDITO PRIVADO LP
+CNPJ: 17.322.725/0001-07
+https://maisretorno.com/fundo/caixa-maxi-fic-classe-fif-rf-cp-lp-rl
+
+SANTANDER:
+Santander Advanced RF Referenciado DI CIC FIF RL (mesmo fundo master)
+CNPJ: 26.507.128/0001-30
+https://maisretorno.com/fundo/santander-advanced-rf-referenciado-di-cic-fif-rl
+
+Santander VIP RF Referenciado DI CIC FIF RL (mesmo fundo master)
+CNPJ: 02.910.278/0001-21
+https://maisretorno.com/fundo/santander-vip-rf-referenciado-di-cic-fif-rl
+
+Santander Premium RF Referenciado DI CIC FIF RL (mesmo fundo master)
+CNPJ: 03.069.104/0001-40
+https://maisretorno.com/fundo/santander-premium-rf-referenciado-di-cic-fif-rl
+
+Santander Equilibrio Advanced RF Referenciado DI CP CIC FIF RL
+CNPJ: 01.615.744/0001-83
+https://maisretorno.com/fundo/santander-equilibrio-advanced-rf-referenciado-di-cp-cic-fif-rl`;
+    });
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function escapeAttr(s) {
+      return String(s).replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>
